@@ -18,6 +18,7 @@
         width={1280}
         height={480}
         alt={data.stack?.name}
+        fetchpriority='low'
         class="mx-auto rounded-lg"
       />
     </Card.Header>

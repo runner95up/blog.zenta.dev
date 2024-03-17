@@ -5,7 +5,7 @@ import type { PageServerLoad } from "./$types";
 
 export const config: Config = {
   isr: {
-    expiration: 60,
+    expiration: 43200,
     bypassToken: BYPASS_TOKEN,
   },
 };
