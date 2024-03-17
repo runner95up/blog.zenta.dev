@@ -55,6 +55,9 @@ model User {
   TechFounderUpdatedBy TechFounder[]     @relation("techFounderUpdatedBy")
   TechCreatedBy        Tech[]            @relation("techCreatedBy")
   TechUpdatedBy        Tech[]            @relation("techUpdatedBy")
+  likedPost            PostLike[]
+  dislikedPost         PostDislike[]
+  comments             PostComment[]
 }
 
 model Session {
@@ -145,16 +148,53 @@ model Post {
   title     String
   slug      String    @unique
   published Boolean   @default(false)
-  authors   User[]
-  tags      Tag[]
-  stack     Tech[]
   cover     String?
   content   Json
+  summary   String?
   related   String[]
-  likes     Int       @default(0)
-  dislikes  Int       @default(0)
+  authors   User[]
+  tags      Tag[]
+  stack     Tech[]  
+  likes     PostLike[]
+  dislikes  PostDislike[]
+  comments  PostComment[]
   views     Int       @default(0)
   readTime  Int       @default(0)
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+}
+
+model PostLike {
+  id        String   @id @default(uuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model PostDislike {
+  id        String   @id @default(uuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model PostComment {
+  id        String         @id @default(uuid())
+  postId    String
+  post      Post           @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   Json
+  parentId  String?
+  parent    PostComment?   @relation("ParentComment", fields: [parentId], references: [id])
+  children  PostComment[]  @relation("ParentComment")
+  createdAt DateTime       @default(now())
+  updatedAt DateTime?      @updatedAt
 }

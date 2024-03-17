@@ -13,41 +13,41 @@
   <Card.Root>
     <Card.Header class="container">
       <Image
-        src={data.tag?.photo ?? "https://via.placeholder.com/800x600"}
+        src={data.post?.cover ?? "https://via.placeholder.com/800x600"}
         layout="constrained"
         width={1280}
         height={480}
-        alt={data.tag?.name}
+        alt={data.post?.title}
         class="mx-auto rounded-lg"
       />
     </Card.Header>
     <Separator class="w-[calc(100%-2rem)] mx-auto" />
     <Card.Content class="mt-8">
-      <Card.Title>{data.tag?.name}</Card.Title>
+      <Card.Title>{data.post?.title}</Card.Title>
       <Card.Description class="mt-2 line-clamp-3">
-        {data.tag?.description}
+        {data.post?.summary}
       </Card.Description>
     </Card.Content>
   </Card.Root>
 </main>
 
 <SvelteSeo
-  title={`${data.tag?.name} - Tag | ${PUBLIC_NAME}`}
-  description={`${data.tag?.description ?? ""}`}
-  keywords={`${data.tag?.name}, ${PUBLIC_NAME}`}
-  canonical={`${PUBLIC_DOMAIN}/tag/${data.tag?.id}`}
+  title={`${data.post?.title} - Post | ${PUBLIC_NAME}`}
+  description={`${data.post?.summary ?? ""}`}
+  keywords={`${data.post?.title}, ${PUBLIC_NAME}`}
+  canonical={`${PUBLIC_DOMAIN}/post/${data.post?.id}`}
   openGraph={{
-    title: data.tag?.name,
-    description: data.tag?.description ?? "",
-    url: `${PUBLIC_DOMAIN}/tag/${data.tag?.id}`,
+    title: data.post?.title,
+    description: data.post?.summary ?? "",
+    url: `${PUBLIC_DOMAIN}/post/${data.post?.id}`,
     type: "website",
-    site_name: data.tag?.name,
+    site_name: data.post?.title,
     images: [
       {
-        url: data.tag?.photo ?? "https://via.placeholder.com/800x600",
+        url: data.post?.cover ?? "https://via.placeholder.com/800x600",
         width: 1280,
         height: 480,
-        alt: data.tag?.name,
+        alt: data.post?.title,
       },
     ],
   }}
@@ -59,8 +59,8 @@
   jsonLd={{
     "@context": "https://schema.org",
     "@type": "WebPage",
-    url: `${PUBLIC_DOMAIN}/tag/${data.tag?.id}`,
-    name: data.tag?.name,
-    description: data.tag?.description ?? "",
+    url: `${PUBLIC_DOMAIN}/post/${data.post?.id}`,
+    name: data.post?.title,
+    description: data.post?.summary ?? "",
   }}
 />

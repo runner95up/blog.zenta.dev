@@ -9,7 +9,8 @@
   export let data: PageData;
 </script>
 
-<main class="container mt-2">
+<main class="container">
+  <h1 class="my-8 text-2xl font-semibold">Post</h1>
   <div class="grid grid-cols-4 gap-4">
     {#each data.posts as post}
       <a href={`/post/${post.slug}`}>
@@ -36,23 +37,22 @@
 </main>
 
 <SvelteSeo
-  title={`${PUBLIC_NAME}`}
-  description="Zenta blog is a blog about web development, mobile development, programming, and technology"
-  keywords="web development, programming, technology, mobile development, software development, software engineering, software, web, mobile"
-  canonical={`${PUBLIC_DOMAIN}/`}
+  title={`Tag | ${PUBLIC_NAME}`}
+  description={`Tags of ${PUBLIC_NAME} used for categorizing posts and pages on this blog`}
+  keywords={`tags, ${PUBLIC_NAME}`}
+  canonical={`${PUBLIC_DOMAIN}/tag`}
   openGraph={{
-    title: `${PUBLIC_NAME}`,
-    description:
-      "Zenta blog is a blog about web development, mobile development, programming, and technology",
-    url: `${PUBLIC_DOMAIN}/`,
+    title: `Tag | ${PUBLIC_NAME}`,
+    description: `Tags of ${PUBLIC_NAME} used for categorizing posts and pages on this blog`,
+    url: `${PUBLIC_DOMAIN}/tag`,
     type: "website",
-    site_name: `${PUBLIC_NAME}`,
+    site_name: `Tag | ${PUBLIC_NAME}`,
     images: [
       {
         url: `${PUBLIC_DOMAIN}/favicon.png`,
         width: 128,
         height: 128,
-        alt: `${PUBLIC_NAME}`,
+        alt: `Tag | ${PUBLIC_NAME}`,
       },
     ],
   }}
@@ -63,10 +63,9 @@
   }}
   jsonLd={{
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    url: `${PUBLIC_DOMAIN}/`,
-    name: `${PUBLIC_NAME}`,
-    description:
-      "Zenta blog is a blog about web development, mobile development, programming, and technology",
+    "@type": "WebPage",
+    url: `${PUBLIC_DOMAIN}/tag`,
+    name: `Tag | ${PUBLIC_NAME}`,
+    description: `Tags of ${PUBLIC_NAME} used for categorizing posts and pages on this blog`,
   }}
 />
