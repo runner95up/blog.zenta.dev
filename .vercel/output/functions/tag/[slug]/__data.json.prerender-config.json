@@ -1,9 +1,0 @@
-{
-	"expiration": 60,
-	"bypassToken": "2ad5rEbuxXzojt4SBpu33IpMTP+Gbr2Vg6UNpnsum4M=",
-	"allowQuery": [
-		"__pathname"
-	],
-	"group": 2,
-	"passQuery": true
-}
