@@ -3,10 +3,12 @@
   import Header from "@/lib/components/header/header.svelte";
   import { partytownSnippet } from "@builder.io/partytown/integration";
   import { inject } from "@vercel/analytics";
+  import { injectSpeedInsights } from '@vercel/speed-insights/sveltekit';
   import "iconify-icon";
   import { ModeWatcher } from "mode-watcher";
   import "../app.pcss";
-
+  
+  injectSpeedInsights(); 
   inject({ mode: dev ? "development" : "production" });
 </script>
 
