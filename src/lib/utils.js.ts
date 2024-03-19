@@ -7,6 +7,23 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function debounce<T extends (...args: any[]) => void>(
+  func: T,
+  delay: number,
+) {
+  let timeoutId: NodeJS.Timeout;
+
+  return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
+    const context = this;
+
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+      func.apply(context, args);
+    }, delay);
+  };
+}
+
 type FlyAndScaleParams = {
   y?: number;
   x?: number;

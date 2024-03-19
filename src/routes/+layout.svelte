@@ -1,5 +1,6 @@
 <script lang="ts">
   import { dev } from "$app/environment";
+  import Header from "@/lib/components/header/header.svelte";
   import { partytownSnippet } from "@builder.io/partytown/integration";
   import { inject } from "@vercel/analytics";
   import "iconify-icon";
@@ -11,7 +12,6 @@
 
 <svelte:head>
   <script>
-    // Forward the necessary functions to the web worker layer
     partytown = {
       forward: ["dataLayer.push"],
     };
@@ -34,5 +34,6 @@
   </script>
 </svelte:head>
 
+<Header />
 <ModeWatcher />
 <slot />
