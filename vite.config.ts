@@ -7,11 +7,7 @@ export default defineConfig({
   plugins: [
     sveltekit(),
     partytownVite({
-      dest: join(
-        __dirname,
-        ".svelte-kit/output/client/_app/immutable",
-        "~partytown",
-      ),
+      dest: join(__dirname, "src/routes", "~partytown"),
     }),
   ],
   build: {
