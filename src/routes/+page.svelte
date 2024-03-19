@@ -9,8 +9,25 @@
   export let data: PageData;
 </script>
 
-<main class="container mt-2">
-  <div class="grid grid-cols-4 gap-4">
+<main class="container mt-4">
+  <Image
+    src={"https://images.unsplash.com/photo-1550745165-9bc0b252726f"}
+    layout="constrained"
+    width={1920}
+    height={480}
+    alt={"Zenta Blog hero banner"}
+    class="rounded-xl"
+  />
+  <section class="max-w-4xl mx-auto my-4">
+    <h1 class="mb-4 text-4xl font-bold text-center">{PUBLIC_NAME}</h1>
+    <p class="mb-4 text-lg font-medium">
+      {PUBLIC_NAME} is a website about programming 🧑‍💻. I will be posting about my
+      programming progress, good and bad days and more. Also, I might have some videos
+      of me coding 🎥.
+    </p>
+    <Separator />
+  </section>
+  <div class="grid max-w-4xl gap-4 mx-auto sm:grid-cols-2">
     {#each data.posts as post}
       <a href={`/post/${post.slug}`}>
         <Card.Root>

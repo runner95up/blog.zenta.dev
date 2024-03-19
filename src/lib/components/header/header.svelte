@@ -31,7 +31,7 @@
 
 <header>
   <nav class={cn("container flex justify-between")}>
-    <div class="flex items-center justify-between w-full gap-2 my-4 md:w-fit">
+    <div class="flex items-center justify-between w-full gap-2 mt-4 md:w-fit">
       <a href="/" class="flex items-center justify-between gap-2"> <Brand /></a>
       <Button
         variant="ghost"
@@ -41,7 +41,7 @@
         <HamburgerMenu />
       </Button>
     </div>
-    <div class="hidden my-4 md:flex">
+    <div class="hidden mt-4 md:flex">
       <ul class="flex flex-col gap-2 md:flex-row lg:gap-4">
         {#each navItems as { name, href }}
           <li>
@@ -50,7 +50,7 @@
         {/each}
       </ul>
     </div>
-    <div class="items-center hidden gap-2 my-4 md:flex">
+    <div class="items-center hidden gap-2 mt-4 md:flex">
       <Searchbar />
       <DarkModeButton />
     </div>
@@ -63,7 +63,7 @@
         {/each}
       </div>
 
-      <div class="flex items-center w-full gap-2 my-4">
+      <div class="flex items-center w-full gap-2 mt-4">
         <Searchbar className="w-full" />
         <DarkModeButton />
       </div>

@@ -10,8 +10,8 @@
 </script>
 
 <main class="container">
-  <h1 class="my-8 text-2xl font-semibold">Post</h1>
-  <div class="grid grid-cols-4 gap-4">
+  <h1 class="my-4 text-xl font-medium">Post</h1>
+  <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
     {#each data.posts as post}
       <a href={`/post/${post.slug}`}>
         <Card.Root>

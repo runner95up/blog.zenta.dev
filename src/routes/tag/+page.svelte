@@ -10,8 +10,8 @@
 </script>
 
 <main class="container">
-  <h1 class="my-8 text-2xl font-semibold">Tag</h1>
-  <div class="grid grid-cols-4 gap-4">
+  <h1 class="my-4 text-xl font-medium">Tag</h1>
+  <div class="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
     {#each data.tags as tag}
       <a href={`/tag/${tag.id}`}>
         <Card.Root>
