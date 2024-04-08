@@ -1,3 +1,2 @@
-import { NavBar } from "./NavBar";
-
-export { NavBar };
+export * from "./GuestHeader";
+export * from "./StudioHeader";

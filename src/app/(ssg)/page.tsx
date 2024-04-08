@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Logo } from "@/components/brand";
 import { PostList, StackList, TagList } from "@/components/server";
 import { getMetaPosts, getMetaTags, getMetaTechs } from "@/lib/server";
-import banner from "../../public/cover.webp";
+import banner from "../../../public/cover.webp";
 
 const title = process.env.NEXT_PUBLIC_SITE_NAME;
 const url = process.env.NEXT_PUBLIC_SITE_URL;

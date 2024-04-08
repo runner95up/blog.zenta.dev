@@ -1,4 +1,3 @@
-"use server";
 import { ItemMeta } from "@/types";
 import { prisma } from ".";
 

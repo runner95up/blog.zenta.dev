@@ -1,15 +1,10 @@
-// export type TagMeta = {
-//   id: string;
-//   name: string;
-//   photo: string | null;
-//   description: string | null;
-//   updatedAt: Date | null;
-// };
-
-export interface ItemMeta {
+interface RemapTag {
   id: string;
   name: string;
-  photo: string | null;
-  description: string | null;
-  updatedAt: Date | null;
+  description?: string;
+  photo?: string;
+}
+
+export interface TagFormProps {
+  initialData: RemapTag | undefined;
 }
