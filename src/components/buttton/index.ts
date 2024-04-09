@@ -1,4 +1,3 @@
-import { BottomNavBarButton } from "./BottomNavBarButton";
-import { ThemeButton } from "./ThemeButton";
-
-export { BottomNavBarButton, ThemeButton };
+export * from "./AddCardButton";
+export * from "./BottomNavBarButton";
+export * from "./ThemeButton";

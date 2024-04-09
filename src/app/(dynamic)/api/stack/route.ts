@@ -21,6 +21,14 @@ export async function POST(req: Request) {
       });
     }
 
+    for (const version of parse.data.versions) {
+      if (!version.hash) {
+        version.hash = parse.data.name + version.version;
+      }
+      if (typeof version.version === "string") {
+        version.version = parseFloat(version.version);
+      }
+    }
     const { name, description, logo, url, versions, homepage, founders } =
       parse.data;
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { AddCardButton } from "@/components/buttton";
 import ImageUpload from "@/components/ImageUpload";
 import { Separator } from "@/components/separator";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "@/components/ui/command";
 import {
   FormControl,
@@ -27,7 +29,6 @@ import { cn } from "@/lib/utils";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useFieldArray } from "react-hook-form";
 import { FaTrash } from "react-icons/fa6";
-import { TiPlus } from "react-icons/ti";
 
 const founderType = [
   { label: "Person", value: "PERSON" },
@@ -78,6 +79,10 @@ export const FounderCard = ({
 
   return (
     <>
+      <div className="col-span-2">
+        <h2 className="mb-4">Founders</h2>
+        <Separator />
+      </div>
       {founderFormArray.fields.map((field, index) => (
         <div key={field.id} className="border p-2 rounded-md">
           <div className="flex items-center justify-between p-2">
@@ -108,6 +113,7 @@ export const FounderCard = ({
                     maxFiles={1}
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -120,6 +126,7 @@ export const FounderCard = ({
                 <FormControl>
                   <Input disabled={loading} {...field} />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -136,7 +143,7 @@ export const FounderCard = ({
                         variant="outline"
                         role="combobox"
                         className={cn(
-                          "w-[200px] justify-between",
+                          "w-full justify-between",
                           !field.value && "text-muted-foreground"
                         )}
                       >
@@ -149,82 +156,36 @@ export const FounderCard = ({
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
+                  <PopoverContent className="w-full p-0">
                     <Command>
                       <CommandInput
                         placeholder="Search framework..."
                         className="h-9"
                       />
-                      <CommandEmpty>No framework found.</CommandEmpty>
-                      <CommandGroup>
-                        <CommandItem
-                          value="PERSON"
-                          onSelect={() => {
-                            field.onChange("PERSON");
-                          }}
-                        >
-                          Person
-                          <CheckIcon
-                            className={cn(
-                              "ml-auto h-4 w-4",
-                              "PERSON" === field.value
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                        </CommandItem>
-                        <CommandItem
-                          value="ORGANIZATION"
-                          onSelect={() => {
-                            field.onChange("ORGANIZATION");
-                          }}
-                        >
-                          Organization
-                          <CheckIcon
-                            className={cn(
-                              "ml-auto h-4 w-4",
-                              "ORGANIZATION" === field.value
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                        </CommandItem>
-                        <CommandItem
-                          value="COMPANY"
-                          onSelect={() => {
-                            field.onChange("COMPANY");
-                          }}
-                        >
-                          Company
-                          <CheckIcon
-                            className={cn(
-                              "ml-auto h-4 w-4",
-                              "COMPANY" === field.value
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                        </CommandItem>
-                        {/* {founderType.map((type) => (
-                          <CommandItem
-                            value={type.label}
-                            key={type.value}
-                            onSelect={() => {
-                              field.onChange(type.value);
-                            }}
-                          >
-                            {type.label}
-                            <CheckIcon
-                              className={cn(
-                                "ml-auto h-4 w-4",
-                                type.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                          </CommandItem>
-                        ))} */}
-                      </CommandGroup>
+                      <CommandList>
+                        <CommandEmpty>No framework found.</CommandEmpty>
+                        <CommandGroup>
+                          {founderType.map((type) => (
+                            <CommandItem
+                              value={type.label}
+                              key={type.value}
+                              onSelect={() => {
+                                field.onChange(type.value);
+                              }}
+                            >
+                              {type.label}
+                              <CheckIcon
+                                className={cn(
+                                  "ml-auto h-4 w-4",
+                                  type.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
                     </Command>
                   </PopoverContent>
                 </Popover>
@@ -246,22 +207,7 @@ export const FounderCard = ({
           />
         </div>
       ))}
-      <AddFounderButton onClick={addNewFounder} />
+      <AddCardButton onClick={addNewFounder} />
     </>
-  );
-};
-
-const AddFounderButton = ({ onClick }: { onClick: () => void }) => {
-  return (
-    <div className="w-64 h-64 flex items-center border rounded-xl">
-      <Button
-        onClick={onClick}
-        variant="outline"
-        className="mx-auto py-4 h-16 gap-2"
-      >
-        <TiPlus className="h-8 w-8" />
-        <span>Add Founder</span>
-      </Button>
-    </div>
   );
 };

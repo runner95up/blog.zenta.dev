@@ -25,9 +25,71 @@ export async function PATCH(req: Request, { params }: Props) {
         errors,
       });
     }
+    console.log("BODY", parse.data);
 
+    for (const version of parse.data.versions) {
+      if (!version.hash) {
+        version.hash = parse.data.name + version.version;
+      }
+      if (typeof version.version === "string") {
+        version.version = parseFloat(version.version);
+      }
+    }
     const { id } = params;
-    const { name, description, logo } = parse.data;
+    const { name, description, logo, url, versions, homepage, founders } =
+      parse.data;
+
+    const find = await prisma.tech.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        founders: true,
+        versions: true,
+      },
+    });
+
+    if (!find) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Tech not found 🚫",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    const deleteFoundersIds = find.founders
+      .filter(
+        (founder) =>
+          !founders.some((newFounder) => newFounder.name === founder.name)
+      )
+      .map((founder) => founder.id);
+
+    const deleteVersionsIds = find.versions
+      .filter(
+        (version) =>
+          !versions.some((newVersion) => newVersion.version === version.version)
+      )
+      .map((version) => version.id);
+
+    await prisma.techFounder.deleteMany({
+      where: {
+        id: {
+          in: deleteFoundersIds,
+        },
+      },
+    });
+
+    await prisma.techVersion.deleteMany({
+      where: {
+        id: {
+          in: deleteVersionsIds,
+        },
+      },
+    });
 
     const tech = await prisma.tech.update({
       where: {
@@ -37,7 +99,34 @@ export async function PATCH(req: Request, { params }: Props) {
         name,
         description,
         logo,
+        url,
+        homepage,
+        versions: {
+          connectOrCreate: versions.map((version) => ({
+            where: { hash: version.hash },
+            create: {
+              hash: name + version.version,
+              version: version.version,
+              whatNews: version.whatNews,
+              description: version.description,
+              url: version.url,
+            },
+          })),
+        },
+        founders: {
+          connectOrCreate: founders.map((founder) => ({
+            where: { name: founder.name },
+            create: {
+              creatorId: ses?.user?.id,
+              name: founder.name,
+              type: founder.type,
+              url: founder.url,
+              photo: founder.photo,
+            },
+          })),
+        },
         updaterId: ses?.user?.id,
+        updatedAt: new Date(),
       },
     });
 

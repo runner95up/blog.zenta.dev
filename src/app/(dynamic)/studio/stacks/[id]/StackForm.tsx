@@ -10,6 +10,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,6 +26,13 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa6";
 import { toast } from "sonner";
 import { FounderCard } from "./FounderCard";
+import { VersionCard } from "./VersionCard";
+
+type ComboboxItem = {
+  label: string;
+  value: string;
+};
+ 
 
 export const StackForm: FC<StackFormProps> = ({ initialData }) => {
   const router = useRouter();
@@ -179,6 +187,7 @@ export const StackForm: FC<StackFormProps> = ({ initialData }) => {
                     maxFiles={1}
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -191,6 +200,7 @@ export const StackForm: FC<StackFormProps> = ({ initialData }) => {
                 <FormControl>
                   <Input disabled={loading} {...field} />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -203,6 +213,7 @@ export const StackForm: FC<StackFormProps> = ({ initialData }) => {
                 <FormControl>
                   <Textarea disabled={loading} {...field} />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -215,6 +226,7 @@ export const StackForm: FC<StackFormProps> = ({ initialData }) => {
                 <FormControl>
                   <Input disabled={loading} {...field} />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -227,11 +239,15 @@ export const StackForm: FC<StackFormProps> = ({ initialData }) => {
                 <FormControl>
                   <Input disabled={loading} {...field} />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
           <div className="grid grid-cols-2 gap-4">
             <FounderCard form={form} loading={loading} />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <VersionCard form={form} loading={loading} />
           </div>
           <Button>
             {loading ? (

@@ -78,16 +78,18 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           ))
         ) : (
           <div className="relative w-[200px] h-[200px] rounded-md overflow-hidden">
-            <div className="z-10 absolute top-2 right-2">
-              <Button
-                type="button"
-                onClick={() => onRemove(value || "")}
-                variant="destructive"
-                size="sm"
-              >
-                <FaRegTrashCan className="h-4 w-4" />
-              </Button>
-            </div>
+            {value && (
+              <div className="z-10 absolute top-2 right-2">
+                <Button
+                  type="button"
+                  onClick={() => onRemove(value || "")}
+                  variant="destructive"
+                  size="sm"
+                >
+                  <FaRegTrashCan className="h-4 w-4" />
+                </Button>
+              </div>
+            )}
             <Image
               fill
               className="object-cover"
