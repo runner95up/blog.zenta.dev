@@ -53,7 +53,7 @@ interface TechDetails {
 }
 
 interface Tech {
-  founder: Founder;
+  founder: Founder[];
   details: TechDetails;
   versions: {
     version: number;
@@ -67,12 +67,14 @@ interface Tech {
 const techs: Tech[] = [
   // java founder
   {
-    founder: {
-      name: "James Gosling",
-      url: "https://en.wikipedia.org/wiki/James_Gosling",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/James_Gosling_2008.jpg/330px-James_Gosling_2008.jpg",
-    },
+    founder: [
+      {
+        name: "James Gosling",
+        url: "https://en.wikipedia.org/wiki/James_Gosling",
+        photo:
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/James_Gosling_2008.jpg/330px-James_Gosling_2008.jpg",
+      },
+    ],
     details: {
       name: "Java",
       description:
@@ -110,12 +112,14 @@ const techs: Tech[] = [
   },
   // python founder
   {
-    founder: {
-      name: "Guido van Rossum",
-      url: "https://en.wikipedia.org/wiki/Guido_van_Rossum",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Guido_van_Rossum_OSCON_2006.jpg/330px-Guido_van_Rossum_OSCON_2006.jpg",
-    },
+    founder: [
+      {
+        name: "Guido van Rossum",
+        url: "https://en.wikipedia.org/wiki/Guido_van_Rossum",
+        photo:
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Guido_van_Rossum_OSCON_2006.jpg/330px-Guido_van_Rossum_OSCON_2006.jpg",
+      },
+    ],
     details: {
       name: "Python",
       description:
@@ -151,12 +155,14 @@ const techs: Tech[] = [
   },
   // javascript founder
   {
-    founder: {
-      name: "Brendan Eich",
-      url: "https://en.wikipedia.org/wiki/Brendan_Eich",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Brendan_Eich_Mozilla_Foundation_official_photo.jpg/330px-Brendan_Eich_Mozilla_Foundation_official_photo.jpg",
-    },
+    founder: [
+      {
+        name: "Brendan Eich",
+        url: "https://en.wikipedia.org/wiki/Brendan_Eich",
+        photo:
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Brendan_Eich_Mozilla_Foundation_official_photo.jpg/330px-Brendan_Eich_Mozilla_Foundation_official_photo.jpg",
+      },
+    ],
     details: {
       name: "JavaScript",
       description:
@@ -193,13 +199,15 @@ const techs: Tech[] = [
   },
   // typescript founder
   {
-    founder: {
-      name: "Microsoft",
-      url: "https://en.wikipedia.org/wiki/TypeScript",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Microsoft_logo_%282012%29.svg/375px-Microsoft_logo_%282012%29.svg.png",
-      type: TechFounderType.COMPANY,
-    },
+    founder: [
+      {
+        name: "Microsoft",
+        url: "https://en.wikipedia.org/wiki/TypeScript",
+        photo:
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Microsoft_logo_%282012%29.svg/375px-Microsoft_logo_%282012%29.svg.png",
+        type: TechFounderType.COMPANY,
+      },
+    ],
     details: {
       name: "TypeScript",
       description:
@@ -237,12 +245,14 @@ const techs: Tech[] = [
   },
   // c founder
   {
-    founder: {
-      name: "Dennis Ritchie",
-      url: "https://en.wikipedia.org/wiki/Dennis_Ritchie",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Dennis_Ritchie_2011.jpg/330px-Dennis_Ritchie_2011.jpg",
-    },
+    founder: [
+      {
+        name: "Dennis Ritchie",
+        url: "https://en.wikipedia.org/wiki/Dennis_Ritchie",
+        photo:
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Dennis_Ritchie_2011.jpg/330px-Dennis_Ritchie_2011.jpg",
+      },
+    ],
     details: {
       name: "C",
       description:
@@ -279,12 +289,14 @@ const techs: Tech[] = [
   },
   // c++ founder
   {
-    founder: {
-      name: "Bjarne Stroustrup",
-      url: "https://en.wikipedia.org/wiki/Bjarne_Stroustrup",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bjarne-stroustrup_%28cropped%29.jpg/330px-Bjarne-stroustrup_%28cropped%29.jpg",
-    },
+    founder: [
+      {
+        name: "Bjarne Stroustrup",
+        url: "https://en.wikipedia.org/wiki/Bjarne_Stroustrup",
+        photo:
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Bjarne-stroustrup_%28cropped%29.jpg/330px-Bjarne-stroustrup_%28cropped%29.jpg",
+      },
+    ],
     details: {
       name: "C++",
       description:
@@ -321,13 +333,15 @@ const techs: Tech[] = [
   },
   // kotlin founder
   {
-    founder: {
-      name: "JetBrains",
-      url: "https://en.wikipedia.org/wiki/JetBrains",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/en/thumb/0/08/JetBrains_beam_logo.svg/330px-JetBrains_beam_logo.svg.png",
-      type: TechFounderType.COMPANY,
-    },
+    founder: [
+      {
+        name: "JetBrains",
+        url: "https://en.wikipedia.org/wiki/JetBrains",
+        photo:
+          "https://upload.wikimedia.org/wikipedia/en/thumb/0/08/JetBrains_beam_logo.svg/330px-JetBrains_beam_logo.svg.png",
+        type: TechFounderType.COMPANY,
+      },
+    ],
     details: {
       name: "Kotlin",
       description:
@@ -365,13 +379,15 @@ const techs: Tech[] = [
   },
   // dart founder
   {
-    founder: {
-      name: "Google",
-      url: "https://en.wikipedia.org/wiki/Google",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/330px-Google_2015_logo.svg.png",
-      type: TechFounderType.COMPANY,
-    },
+    founder: [
+      {
+        name: "Google",
+        url: "https://en.wikipedia.org/wiki/Google",
+        photo:
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/330px-Google_2015_logo.svg.png",
+        type: TechFounderType.COMPANY,
+      },
+    ],
     details: {
       name: "Dart",
       description:
@@ -409,13 +425,15 @@ const techs: Tech[] = [
   },
   // go founder
   {
-    founder: {
-      name: "Google",
-      url: "https://en.wikipedia.org/wiki/Google",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/330px-Google_2015_logo.svg.png",
-      type: TechFounderType.COMPANY,
-    },
+    founder: [
+      {
+        name: "Google",
+        url: "https://en.wikipedia.org/wiki/Google",
+        photo:
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/330px-Google_2015_logo.svg.png",
+        type: TechFounderType.COMPANY,
+      },
+    ],
     details: {
       name: "Go",
       description:
@@ -453,12 +471,14 @@ const techs: Tech[] = [
   },
   // rust founder
   {
-    founder: {
-      name: "Graydon Hoare",
-      url: "https://en.wikipedia.org/wiki/Graydon_Hoare",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Rust_programming_language_black_logo.svg/182px-Rust_programming_language_black_logo.svg.png",
-    },
+    founder: [
+      {
+        name: "Graydon Hoare",
+        url: "https://en.wikipedia.org/wiki/Graydon_Hoare",
+        photo:
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Rust_programming_language_black_logo.svg/182px-Rust_programming_language_black_logo.svg.png",
+      },
+    ],
     details: {
       name: "Rust",
       description:
@@ -496,12 +516,14 @@ const techs: Tech[] = [
   },
   // php founder
   {
-    founder: {
-      name: "Rasmus Lerdorf",
-      url: "https://en.wikipedia.org/wiki/Rasmus_Lerdorf",
-      photo:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Rasmus_Lerdorf_August_2014_%28cropped%29.JPG/330px-Rasmus_Lerdorf_August_2014_%28cropped%29.JPG",
-    },
+    founder: [
+      {
+        name: "Rasmus Lerdorf",
+        url: "https://en.wikipedia.org/wiki/Rasmus_Lerdorf",
+        photo:
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Rasmus_Lerdorf_August_2014_%28cropped%29.JPG/330px-Rasmus_Lerdorf_August_2014_%28cropped%29.JPG",
+      },
+    ],
     details: {
       name: "PHP",
       description:
@@ -561,22 +583,23 @@ const techSeeder = async () => {
         logo: tech.details.logo,
         url: tech.details.url,
         homepage: tech.details.homepage,
-        founder: {
-          connectOrCreate: {
+        founders: {
+          connectOrCreate: tech.founder.map((founder) => ({
             where: {
-              name: tech.founder.name,
+              name: founder.name,
             },
             create: {
-              name: tech.founder.name,
-              url: tech.founder.url,
-              photo: tech.founder.photo,
+              name: founder.name,
+              url: founder.url,
+              photo: founder.photo,
+              type: founder.type,
               createdBy: {
                 connect: {
                   email: admin.email || "",
                 },
               },
             },
-          },
+          })),
         },
         versions: {
           connectOrCreate: tech.versions.map((version) => ({
@@ -604,23 +627,23 @@ const techSeeder = async () => {
         logo: tech.details.logo,
         url: tech.details.url,
         homepage: tech.details.homepage || null,
-        founder: {
-          connectOrCreate: {
+        founders: {
+          connectOrCreate: tech.founder.map((founder) => ({
             where: {
-              name: tech.founder.name,
+              name: founder.name,
             },
             create: {
-              name: tech.founder.name,
-              url: tech.founder.url,
-              photo: tech.founder.photo,
-              type: tech.founder.type,
+              name: founder.name,
+              url: founder.url,
+              photo: founder.photo,
+              type: founder.type,
               createdBy: {
                 connect: {
                   email: admin.email || "",
                 },
               },
             },
-          },
+          })),
         },
         versions: {
           connectOrCreate: tech.versions.map((version) => ({
@@ -705,7 +728,7 @@ const tags = [
     photo:
       "https://images.unsplash.com/photo-1535378620166-273708d44e4c?q=80&w=2157&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
-];
+] as const;
 
 const tagSeeder = async () => {
   const u = await prisma.user.findUnique({

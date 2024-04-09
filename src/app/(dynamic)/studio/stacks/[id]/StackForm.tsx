@@ -15,8 +15,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { emptyToNull } from "@/lib/utils";
-import { TagFormValue, TagSchema } from "@/schema";
-import { TagFormProps } from "@/types";
+import { StackFormValue, StackSchema } from "@/schema";
+import { StackFormProps } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
@@ -24,30 +24,31 @@ import { useForm } from "react-hook-form";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa6";
 import { toast } from "sonner";
+import { FounderCard } from "./FounderCard";
 
-export const TagForm: FC<TagFormProps> = ({ initialData }) => {
+export const StackForm: FC<StackFormProps> = ({ initialData }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const { setIsExpanded, setLimit } = useToast();
 
-  const title = initialData ? `Edit ${initialData.name}` : "Create new tag";
+  const title = initialData ? `Edit ${initialData.name}` : "Create new stack";
   const description = initialData
     ? `You're editing ${initialData.name} with id ${initialData.id}.`
-    : "Add a new tag";
+    : "Add a new stack";
   const action = initialData ? "Save changes" : "Create";
 
-  const form = useForm<TagFormValue>({
-    resolver: zodResolver(TagSchema),
+  const form = useForm<StackFormValue>({
+    resolver: zodResolver(StackSchema),
     defaultValues: initialData || {},
   });
 
-  const onSubmit = async (data: TagFormValue) => {
+  const onSubmit = async (data: StackFormValue) => {
     try {
       setLoading(true);
       let res;
       if (initialData) {
-        res = await fetch(`/api/tag/${initialData.id}`, {
+        res = await fetch(`/api/stack/${initialData.id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -55,7 +56,7 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
           body: JSON.stringify(emptyToNull(data)),
         });
       } else {
-        res = await fetch("/api/tag", {
+        res = await fetch("/api/stack", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -69,7 +70,7 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
         toast.success(json.message);
         router.refresh();
         setTimeout(() => {
-          router.push("/studio/tags");
+          router.push("/studio/stacks");
         }, 1000);
       } else {
         if (json.redirect) {
@@ -102,7 +103,7 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
       if (initialData) {
         setLoading(true);
         console.log(initialData.id);
-        const res = await fetch(`/api/tag/${initialData.id}`, {
+        const res = await fetch(`/api/stack/${initialData.id}`, {
           method: "DELETE",
         });
 
@@ -115,7 +116,7 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
 
           router.refresh();
           setTimeout(() => {
-            router.push("/studio/tags");
+            router.push("/studio/stacks");
           }, 1000);
         } else {
           if (json.redirect) {
@@ -164,10 +165,10 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
         >
           <FormField
             control={form.control}
-            name="photo"
+            name="logo"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="photo">Photo</FormLabel>
+                <FormLabel htmlFor="logo">Logo</FormLabel>
                 <FormControl>
                   <ImageUpload
                     value={field.value}
@@ -205,6 +206,33 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="url"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="url">Wiki Url</FormLabel>
+                <FormControl>
+                  <Input disabled={loading} {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="homepage"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="homepage">Home Page</FormLabel>
+                <FormControl>
+                  <Input disabled={loading} {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <div className="grid grid-cols-2 gap-4">
+            <FounderCard form={form} loading={loading} />
+          </div>
           <Button>
             {loading ? (
               <AiOutlineLoading3Quarters className=" animate-spin" />

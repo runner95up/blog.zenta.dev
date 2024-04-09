@@ -44,7 +44,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   const preset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "";
 
   return (
-    <div className={cn(className)}>
+    <div className={cn("mx-auto flex items-center flex-col", className)}>
       <div className="mb-4 flex items-center gap-4">
         {value === undefined ? (
           <div className="flex items-center border rounded-xl p-4 ">
@@ -120,6 +120,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               disabled={disabled}
               variant="secondary"
               onClick={onClick}
+              className="flex mx-auto"
             >
               <TiPlus className="h-4 w-4 mr-2" />
               Upload an Image

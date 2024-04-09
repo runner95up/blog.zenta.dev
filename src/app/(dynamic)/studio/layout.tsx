@@ -68,7 +68,6 @@ export default async function StudioLayout({
       btnStyle: styles.btn_studio_settings,
     },
   ] as const;
-
   return (
     <AuthProvider session={session}>
       <ToastProvider>

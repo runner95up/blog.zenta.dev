@@ -52,6 +52,10 @@ export async function getTechById(id: string) {
     where: {
       id,
     },
+    include: {
+      founders: true,
+      versions: true,
+    },
   });
 
   return tech;

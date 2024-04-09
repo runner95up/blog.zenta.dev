@@ -116,8 +116,8 @@ model TechVersion {
   techId      String
   tech        Tech      @relation(fields: [techId], references: [id], onDelete: Cascade)
   hash        String    @unique
-  whatNews    String?
   version     Float
+  whatNews    String?
   description String?
   url         String?
   createdAt   DateTime  @default(now())
@@ -126,8 +126,6 @@ model TechVersion {
 
 model Tech {
   id          String        @id @default(uuid())
-  founderId   String
-  founder     TechFounder   @relation(fields: [founderId], references: [id], onDelete: Cascade)
   createdBy   User?         @relation("techCreatedBy", fields: [creatorId], references: [id], onDelete: Cascade)
   creatorId   String?
   updatedBy   User?         @relation("techUpdatedBy", fields: [updaterId], references: [id], onDelete: Cascade)
@@ -136,12 +134,13 @@ model Tech {
   description String
   logo        String
   url         String
-  versions    TechVersion[]
   homepage    String?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime?     @updatedAt
+  founders    TechFounder[]
+  versions    TechVersion[]
   tags        Tag[]
   posts       Post[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime?     @updatedAt
 }
 
 model Tag {
