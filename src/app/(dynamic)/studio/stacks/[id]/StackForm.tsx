@@ -32,7 +32,6 @@ type ComboboxItem = {
   label: string;
   value: string;
 };
- 
 
 export const StackForm: FC<StackFormProps> = ({ initialData }) => {
   const router = useRouter();
@@ -104,6 +103,7 @@ export const StackForm: FC<StackFormProps> = ({ initialData }) => {
       toast.error("An error occurred");
     } finally {
       setLoading(false);
+      setOpen(false);
     }
   };
   async function onDelete() {

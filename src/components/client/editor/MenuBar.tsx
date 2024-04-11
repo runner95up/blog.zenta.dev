@@ -1,17 +1,27 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { CodeIcon } from "@radix-ui/react-icons";
 import { Editor } from "@tiptap/react";
 import { CldUploadWidget } from "next-cloudinary";
 import { ChangeEvent, useEffect, useState } from "react";
 import { AiOutlineOrderedList } from "react-icons/ai";
-import { CiImageOn } from "react-icons/ci";
+import {
+  CiImageOn,
+  CiTextAlignCenter,
+  CiTextAlignJustify,
+  CiTextAlignLeft,
+  CiTextAlignRight,
+} from "react-icons/ci";
 import { FaParagraph, FaTable, FaYoutube } from "react-icons/fa6";
 import { MdHorizontalRule, MdOutlineInsertPageBreak } from "react-icons/md";
 import { PiListBullets, PiQuotesDuotone } from "react-icons/pi";
-
-import { Input } from "@/components/ui/input";
 import { RiTaskLine } from "react-icons/ri";
 import { Modal } from "../modal";
 
@@ -22,8 +32,10 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
   const [ytError, setYtError] = useState<string | null>(null);
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    if (editor && !isMounted) {
+      setIsMounted(true);
+    }
+  }, [editor, isMounted]);
 
   if (!isMounted || !editor) {
     return null;
@@ -104,6 +116,71 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
       >
         <FaParagraph />
       </Button>
+      {/* Text Align Popover */}
+      <Popover>
+        <PopoverTrigger>
+          {editor?.isActive({ textAlign: "left" }) && (
+            <Button role="button" variant="ghost">
+              <CiTextAlignLeft />
+            </Button>
+          )}
+          {editor?.isActive({ textAlign: "center" }) && (
+            <Button role="button" variant="ghost">
+              <CiTextAlignCenter />
+            </Button>
+          )}
+          {editor?.isActive({ textAlign: "right" }) && (
+            <Button role="button" variant="ghost">
+              <CiTextAlignRight />
+            </Button>
+          )}
+          {editor?.isActive({ textAlign: "justify" }) && (
+            <Button role="button" variant="ghost">
+              <CiTextAlignJustify />
+            </Button>
+          )}
+        </PopoverTrigger>
+        <PopoverContent>
+          <Button
+            onClick={() => editor?.chain().focus().setTextAlign("left").run()}
+            variant={
+              editor?.isActive({ textAlign: "left" }) ? "default" : "ghost"
+            }
+            type="button"
+          >
+            <CiTextAlignLeft />
+          </Button>
+          <Button
+            onClick={() => editor?.chain().focus().setTextAlign("center").run()}
+            variant={
+              editor?.isActive({ textAlign: "center" }) ? "default" : "ghost"
+            }
+            type="button"
+          >
+            <CiTextAlignCenter />
+          </Button>
+          <Button
+            onClick={() => editor?.chain().focus().setTextAlign("right").run()}
+            variant={
+              editor?.isActive({ textAlign: "right" }) ? "default" : "ghost"
+            }
+            type="button"
+          >
+            <CiTextAlignRight />
+          </Button>
+          <Button
+            onClick={() =>
+              editor?.chain().focus().setTextAlign("justify").run()
+            }
+            variant={
+              editor?.isActive({ textAlign: "justify" }) ? "default" : "ghost"
+            }
+            type="button"
+          >
+            <CiTextAlignJustify />
+          </Button>
+        </PopoverContent>
+      </Popover>
       {/* Block Qoute */}
       <Button
         onClick={() => editor?.chain().focus().toggleBlockquote().run()}

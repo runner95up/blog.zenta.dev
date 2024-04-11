@@ -21,7 +21,7 @@ export async function POST(req: Request) {
       });
     }
 
-    const { title, summary, cover, content } = parse.data;
+    const { title, summary, cover, content, readTime } = parse.data;
 
     const find = await prisma.post.findFirst({
       where: {
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const readTime = calculateReadTime(content);
+    const totalTime = calculateReadTime(readTime);
 
     const post = await prisma.post.create({
       data: {
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
         summary,
         cover,
         content,
-        readTime,
+        readTime: totalTime,
         authors: {
           connect: {
             id: ses?.user?.id,

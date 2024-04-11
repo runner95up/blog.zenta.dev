@@ -8,6 +8,7 @@ export const PostSchema = z.object({
   cover: z.string().optional(),
   summary: z.string().optional(),
   content: z.any(),
+  readTime: z.number().optional(),
 });
 
 export type PostFormValue = z.infer<typeof PostSchema>;

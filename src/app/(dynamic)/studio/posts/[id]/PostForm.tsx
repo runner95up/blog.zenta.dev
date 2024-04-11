@@ -38,7 +38,11 @@ export const PostForm: FC<PostFormProps> = ({ initialData }) => {
 
   const form = useForm<PostFormValue>({
     resolver: zodResolver(PostSchema),
-    defaultValues: initialData || {},
+    defaultValues: initialData || {
+      title: "",
+      summary: "",
+      content: {},
+    },
   });
 
   const onSubmit = async (data: PostFormValue) => {
@@ -70,7 +74,7 @@ export const PostForm: FC<PostFormProps> = ({ initialData }) => {
         toast.success(json.message);
         router.refresh();
         setTimeout(() => {
-          router.push("/studio/posts");
+          //  router.push("/studio/posts");
         }, 1000);
       } else {
         if (json.redirect) {
@@ -85,6 +89,7 @@ export const PostForm: FC<PostFormProps> = ({ initialData }) => {
       toast.error("An error occurred. Please try again later");
     } finally {
       setLoading(false);
+      setOpen(false);
     }
   };
   async function onDelete() {
@@ -203,6 +208,9 @@ export const PostForm: FC<PostFormProps> = ({ initialData }) => {
                   <Editor
                     onChange={(content) => field.onChange(content)}
                     content={initialData?.content}
+                    setWordCount={(count) => {
+                      form.setValue("readTime", count);
+                    }}
                   />
                 </FormControl>
               </FormItem>

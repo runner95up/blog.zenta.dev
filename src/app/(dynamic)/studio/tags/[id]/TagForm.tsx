@@ -133,6 +133,7 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
       toast.error("An error occurred");
     } finally {
       setLoading(false);
+      setOpen(false);
     }
   }
 

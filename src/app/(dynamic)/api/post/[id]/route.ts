@@ -27,9 +27,11 @@ export async function PATCH(req: Request, { params }: Props) {
     }
 
     const { id } = params;
-    const { title, summary, cover, content } = parse.data;
+    const { title, summary, cover, content, readTime } = parse.data;
 
-    const readTime = calculateReadTime(content.content);
+    console.log(readTime, "/words");
+
+    const totalTime = calculateReadTime(readTime);
 
     const post = await prisma.post.update({
       where: {
@@ -41,7 +43,7 @@ export async function PATCH(req: Request, { params }: Props) {
         summary,
         cover,
         content,
-        readTime,
+        readTime: totalTime,
         authors: {
           connect: {
             id: ses?.user?.id,
