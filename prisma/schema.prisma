@@ -185,7 +185,7 @@ model Post {
   dislikes  PostDislike[]
   comments  PostComment[]
   views     Int           @default(0)
-  readTime  Int           @default(0)
+  readTime  Float         @default(0)
   createdAt DateTime      @default(now())
   updatedAt DateTime?     @updatedAt
 }

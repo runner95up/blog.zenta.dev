@@ -1,5 +1,6 @@
+import { extensions } from "@/components/client/editor";
 import { getAllMetaPosts, getPostBySlug } from "@/lib/server";
-import { generateHTML } from "@/lib/utils";
+import { generateHTML } from "@tiptap/html";
 import parse from "html-react-parser";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -27,8 +28,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PostPage({ params }: Props) {
   const post = await getPostBySlug(params.slug);
-
-  const content = generateHTML(post?.content);
+  const content = post?.content as any;
+  console.log(content);
+  const html = generateHTML(content, extensions);
 
   return (
     <main className="max-w-5xl mx-auto my-2">
@@ -41,8 +43,7 @@ export default async function PostPage({ params }: Props) {
           height={360}
         />
         <h1 className="my-4 text-2xl font-bold text-center">{post?.title}</h1>
-
-        {parse(content)}
+        {parse(html)}
       </article>
     </main>
   );

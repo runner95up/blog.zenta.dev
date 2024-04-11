@@ -2,7 +2,7 @@ import { StudioHeader } from "@/components/navigation";
 import { Button } from "@/components/ui/button";
 import { ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import { defaultLayout } from "@/lib/config";
-import { options } from "@/lib/server";
+import { options, prisma } from "@/lib/server";
 import { cn } from "@/lib/utils";
 import { AuthProvider, ToastProvider } from "@/provider";
 import type { Metadata } from "next";
@@ -29,6 +29,16 @@ export default async function StudioLayout({
   const session = await getServerSession(options);
   if (!session) {
     redirect("/auth/signin");
+  }
+
+  const find = await prisma.user.findUnique({
+    where: {
+      id: session.user.id,
+    },
+  });
+
+  if (!find) {
+    redirect("/auth/signout");
   }
 
   const navItems = [

@@ -733,7 +733,7 @@ const tags = [
 const tagSeeder = async () => {
   const u = await prisma.user.findUnique({
     where: {
-      email: "bokirsianpar95@gmail.com",
+      email: "zenta@seeder.com",
     },
   });
   for (const tag of tags) {
@@ -767,11 +767,71 @@ const tagSeeder = async () => {
   }
 };
 
+const postSeeder = async () => {
+  const techs = await prisma.tech.findMany();
+  const tags = await prisma.tag.findMany();
+
+  const posts = [
+    {
+      title: "The History of Java",
+      slug: "the-history-of-java",
+      cover:
+        "https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Java_programming_language_logo.svg/131px-Java_programming_language_logo.svg.png",
+      summary:
+        "Java is a class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible.",
+      content: {
+        type: "doc",
+        content: [
+          {
+            type: "paragraph",
+            content: [
+              {
+                type: "text",
+                text: "Java is a class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible.",
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ];
+
+  for (const post of posts) {
+    console.log(`Seeding post: ${post.title} 🌱`);
+    const res = await prisma.post.create({
+      data: {
+        title: post.title,
+        slug: post.slug,
+        cover: post.cover,
+        summary: post.summary,
+        content: post.content,
+        stack: {
+          connect: techs.map((tech) => ({
+            id: tech.id,
+          })),
+        },
+        tags: {
+          connect: tags.map((tag) => ({
+            id: tag.id,
+          })),
+        },
+        authors: {
+          connect: {
+            email: "zenta@seeder.com",
+          },
+        },
+      },
+    });
+    console.log(`Seeded post: ${res.title} 🌱`);
+  }
+};
+
 (async () => {
   await techSeeder();
   await tagSeeder();
+  await postSeeder();
   const person = {
-    email: "bokirsianpar95@gmail.com",
+    email: "zenta@seeder.com",
     pin: parseInt(Math.random().toString().slice(2, 8)),
   };
 

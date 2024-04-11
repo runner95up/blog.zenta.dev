@@ -1,4 +1,5 @@
 import { JsonValue } from "@prisma/client/runtime/library";
+import { JSONContent } from "@tiptap/react";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { ZodIssue } from "zod";
@@ -134,4 +135,49 @@ export function normalizeZodError(issues: ZodIssue[]) {
   }
 
   return msgs;
+}
+
+type AnyFunction = (...args: any[]) => any;
+
+export function debounce<T extends AnyFunction>(func: T, delay: number): T {
+  let timer: ReturnType<typeof setTimeout> | null;
+
+  return function (this: any, ...args: Parameters<T>): ReturnType<T> {
+    const context = this;
+
+    clearTimeout(timer!);
+
+    timer = setTimeout(function () {
+      func.apply(context, args);
+    }, delay);
+
+    return func.apply(context, args);
+  } as T;
+}
+
+export function calculateReadTime(content: JSONContent) {
+  const wordsPerMinute = 200;
+  let totalWords = 0;
+  let selectedText: any[] = [];
+
+  function countWords(item: any) {
+    if (item.type === "text") {
+      selectedText.push(item.text);
+      totalWords += item.text.split(" ").length;
+      return;
+    }
+    if (Array.isArray(item.content)) {
+      item.content.forEach((subItem: any) => {
+        countWords(subItem);
+      });
+    }
+  }
+
+  if (content) {
+    Object.values(content).forEach((item: any) => {
+      countWords(item);
+    });
+  }
+
+  return totalWords / wordsPerMinute;
 }

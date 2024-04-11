@@ -1,6 +1,7 @@
 "use client";
 import { Heading } from "@/components";
 import { AlertModal } from "@/components/client";
+import { Editor } from "@/components/client/editor";
 import ImageUpload from "@/components/ImageUpload";
 import { Separator } from "@/components/separator";
 import { Button } from "@/components/ui/button";
@@ -13,10 +14,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { emptyToNull } from "@/lib/utils";
-import { TagFormValue, TagSchema } from "@/schema";
-import { TagFormProps } from "@/types";
+import { PostFormValue, PostSchema } from "@/schema";
+import { PostFormProps } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { FC, useState } from "react";
@@ -25,29 +25,28 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaTrash } from "react-icons/fa6";
 import { toast } from "sonner";
 
-export const TagForm: FC<TagFormProps> = ({ initialData }) => {
+export const PostForm: FC<PostFormProps> = ({ initialData }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const { setIsExpanded, setLimit } = useToast();
 
-  const title = initialData ? `Edit ${initialData.name}` : "Create new tag";
+  const title = initialData ? `Edit ${initialData.title}` : "Create new post";
   const description = initialData
-    ? `You're editing ${initialData.name} with id ${initialData.id}.`
-    : "Add a new tag";
+    ? `You're editing ${initialData.title} with id ${initialData.id}.`
+    : "Add a new post";
   const action = initialData ? "Save changes" : "Create";
 
-  const form = useForm<TagFormValue>({
-    resolver: zodResolver(TagSchema),
+  const form = useForm<PostFormValue>({
+    resolver: zodResolver(PostSchema),
     defaultValues: initialData || {},
   });
 
-  const onSubmit = async (data: TagFormValue) => {
+  const onSubmit = async (data: PostFormValue) => {
     try {
       setLoading(true);
       let res;
       if (initialData) {
-        res = await fetch(`/api/tag/${initialData.id}`, {
+        res = await fetch(`/api/post/${initialData.id}`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -55,7 +54,7 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
           body: JSON.stringify(emptyToNull(data)),
         });
       } else {
-        res = await fetch("/api/tag", {
+        res = await fetch("/api/post", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -63,36 +62,27 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
           body: JSON.stringify(emptyToNull(data)),
         });
       }
-
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
       const json = await res.json();
       if (json.success) {
         toast.success(json.message);
         router.refresh();
         setTimeout(() => {
-          router.push("/studio/tags");
+          router.push("/studio/posts");
         }, 1000);
       } else {
         if (json.redirect) {
           router.refresh();
           router.push("/auth/signin");
-        }
-        if (Array.isArray(json.errors)) {
-          setIsExpanded(true);
-          setLimit(json.errors.length);
-          for (const key in json.errors) {
-            const error = json.errors[key];
-            console.log(error);
-            toast.error(error.label, { description: error.message });
-          }
-          setIsExpanded(false);
-          setLimit(3);
         } else {
           toast.error(json.message);
         }
       }
     } catch (error) {
       console.error(error);
-      toast.error("An error occurred");
+      toast.error("An error occurred. Please try again later");
     } finally {
       setLoading(false);
     }
@@ -101,21 +91,16 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
     try {
       if (initialData) {
         setLoading(true);
-        console.log(initialData.id);
-        const res = await fetch(`/api/tag/${initialData.id}`, {
+        const res = await fetch(`/api/post/${initialData.id}`, {
           method: "DELETE",
         });
 
-        console.log(res);
-
         const json = await res.json();
-
         if (json.success) {
-          toast.success(json.message, { duration: 3000 });
-
+          toast.success(json.message);
           router.refresh();
           setTimeout(() => {
-            router.push("/studio/tags");
+            router.push("/studio/posts");
           }, 1000);
         } else {
           if (json.redirect) {
@@ -126,13 +111,15 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
           }
         }
       } else {
-        toast.error("No data to delete");
+        toast.error("Post not found");
       }
     } catch (error) {
       console.error(error);
       toast.error("An error occurred");
     } finally {
       setLoading(false);
+      setOpen(false);
+      router.push("/studio/posts");
     }
   }
 
@@ -144,7 +131,7 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
         onConfirm={onDelete}
         loading={loading}
       />
-      <div className="flex items-center justify-between py-1.5 px-4">
+      <div className="flex items-center justify-between py-1 5 px-4">
         <Heading title={title} description={description} />
         {initialData && (
           <Button
@@ -153,7 +140,7 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
             size="sm"
             onClick={() => setOpen(true)}
           >
-            <FaTrash className="h-4 w-4" />
+            <FaTrash className="mr-1" />
           </Button>
         )}
       </div>
@@ -165,10 +152,22 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
         >
           <FormField
             control={form.control}
-            name="photo"
+            name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="photo">Photo</FormLabel>
+                <FormLabel htmlFor="title">Title</FormLabel>
+                <FormControl>
+                  <Input {...field} id="title" placeholder="Title" />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="cover"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="cover">Cover</FormLabel>
                 <FormControl>
                   <ImageUpload
                     value={field.value}
@@ -184,31 +183,34 @@ export const TagForm: FC<TagFormProps> = ({ initialData }) => {
           />
           <FormField
             control={form.control}
-            name="name"
+            name="summary"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="name">Name</FormLabel>
+                <FormLabel htmlFor="summary">Summary</FormLabel>
                 <FormControl>
-                  <Input disabled={loading} {...field} />
+                  <Textarea {...field} id="summary" placeholder="Summary" />
                 </FormControl>
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="description"
+            name="content"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="description">Description</FormLabel>
+                <FormLabel htmlFor="content">Content</FormLabel>
                 <FormControl>
-                  <Textarea disabled={loading} {...field} />
+                  <Editor
+                    onChange={(content) => field.onChange(content)}
+                    content={initialData?.content}
+                  />
                 </FormControl>
               </FormItem>
             )}
           />
           <Button>
             {loading ? (
-              <AiOutlineLoading3Quarters className=" animate-spin" />
+              <AiOutlineLoading3Quarters className="animate-spin" />
             ) : (
               action
             )}

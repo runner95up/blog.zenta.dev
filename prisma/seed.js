@@ -693,7 +693,7 @@ var tagSeeder = function () { return __awaiter(void 0, void 0, void 0, function 
         switch (_a.label) {
             case 0: return [4 /*yield*/, prisma.user.findUnique({
                     where: {
-                        email: "bokirsianpar95@gmail.com",
+                        email: "zenta@seeder.com",
                     },
                 })];
             case 1:
@@ -740,6 +740,79 @@ var tagSeeder = function () { return __awaiter(void 0, void 0, void 0, function 
         }
     });
 }); };
+var postSeeder = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var techs, tags, posts, _i, posts_1, post, res;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, prisma.tech.findMany()];
+            case 1:
+                techs = _a.sent();
+                return [4 /*yield*/, prisma.tag.findMany()];
+            case 2:
+                tags = _a.sent();
+                posts = [
+                    {
+                        title: "The History of Java",
+                        slug: "the-history-of-java",
+                        cover: "https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Java_programming_language_logo.svg/131px-Java_programming_language_logo.svg.png",
+                        summary: "Java is a class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible.",
+                        content: {
+                            type: "doc",
+                            content: [
+                                {
+                                    type: "paragraph",
+                                    content: [
+                                        {
+                                            type: "text",
+                                            text: "Java is a class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible.",
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    },
+                ];
+                _i = 0, posts_1 = posts;
+                _a.label = 3;
+            case 3:
+                if (!(_i < posts_1.length)) return [3 /*break*/, 6];
+                post = posts_1[_i];
+                console.log("Seeding post: ".concat(post.title, " \uD83C\uDF31"));
+                return [4 /*yield*/, prisma.post.create({
+                        data: {
+                            title: post.title,
+                            slug: post.slug,
+                            cover: post.cover,
+                            summary: post.summary,
+                            content: post.content,
+                            stack: {
+                                connect: techs.map(function (tech) { return ({
+                                    id: tech.id,
+                                }); }),
+                            },
+                            tags: {
+                                connect: tags.map(function (tag) { return ({
+                                    id: tag.id,
+                                }); }),
+                            },
+                            authors: {
+                                connect: {
+                                    email: "zenta@seeder.com",
+                                },
+                            },
+                        },
+                    })];
+            case 4:
+                res = _a.sent();
+                console.log("Seeded post: ".concat(res.title, " \uD83C\uDF31"));
+                _a.label = 5;
+            case 5:
+                _i++;
+                return [3 /*break*/, 3];
+            case 6: return [2 /*return*/];
+        }
+    });
+}); };
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var person;
     return __generator(this, function (_a) {
@@ -750,8 +823,11 @@ var tagSeeder = function () { return __awaiter(void 0, void 0, void 0, function 
                 return [4 /*yield*/, tagSeeder()];
             case 2:
                 _a.sent();
+                return [4 /*yield*/, postSeeder()];
+            case 3:
+                _a.sent();
                 person = {
-                    email: "bokirsianpar95@gmail.com",
+                    email: "zenta@seeder.com",
                     pin: parseInt(Math.random().toString().slice(2, 8)),
                 };
                 return [4 /*yield*/, prisma.invitation.upsert({
@@ -777,7 +853,7 @@ var tagSeeder = function () { return __awaiter(void 0, void 0, void 0, function 
                             pin: person.pin,
                         },
                     })];
-            case 3:
+            case 4:
                 _a.sent();
                 return [2 /*return*/];
         }

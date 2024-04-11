@@ -56,3 +56,13 @@ export async function getPostBySlug(slug: string) {
 
   return post;
 }
+
+export async function getPostById(id: string) {
+  const post = await prisma.post.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  return post;
+}

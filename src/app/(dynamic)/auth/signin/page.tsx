@@ -39,6 +39,8 @@ export default function LoginPage() {
       password: data.password,
     });
 
+    console.log("res", res);
+
     if (res?.ok) {
       setLoading(false);
       toast.success("Logged in successfully");
@@ -50,60 +52,70 @@ export default function LoginPage() {
   }
 
   return (
-    <Card className="max-w-sm m-auto">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl">Login</CardTitle>
-        <CardDescription>Sign in to your account</CardDescription>
-      </CardHeader>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="flex flex-col gap-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor={field.name}>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor={field.name}>Password</FormLabel>
-                  <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <main className="flex items-center justify-center h-screen">
+      <Card className="w-96">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl">Login</CardTitle>
+          <CardDescription>Sign in to your account</CardDescription>
+        </CardHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <CardContent className="flex flex-col gap-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor={field.name}>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor={field.name}>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <p className="text-sm text-center">
-              Don&apos;t have an account?{" "}
-              <Link href="/auth/signup">
-                <Button variant="link" className="text-blue-500" type="button">
-                  Sign up
-                </Button>
-              </Link>
-            </p>
+              <p className="text-sm text-center">
+                Don&apos;t have an account?{" "}
+                <Link href="/auth/signup">
+                  <Button
+                    variant="link"
+                    className="text-blue-500"
+                    type="button"
+                  >
+                    Sign up
+                  </Button>
+                </Link>
+              </p>
 
-            <Button type="submit">
-              {loading ? (
-                <AiOutlineLoading3Quarters className=" animate-spin" />
-              ) : (
-                "Sign in"
-              )}
-            </Button>
-          </CardContent>
-        </form>
-      </Form>
-    </Card>
+              <Button type="submit">
+                {loading ? (
+                  <AiOutlineLoading3Quarters className=" animate-spin" />
+                ) : (
+                  "Sign in"
+                )}
+              </Button>
+            </CardContent>
+          </form>
+        </Form>
+      </Card>
+    </main>
   );
 }

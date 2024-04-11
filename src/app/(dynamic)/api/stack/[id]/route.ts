@@ -8,6 +8,7 @@ type Props = {
     id: string;
   };
 };
+
 export async function PATCH(req: Request, { params }: Props) {
   try {
     const ses = await gss(true);

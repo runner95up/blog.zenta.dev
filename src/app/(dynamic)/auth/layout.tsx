@@ -1,7 +1,7 @@
 import { options } from "@/lib/server";
+import { AuthProvider, ToastProvider } from "@/provider";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
-import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: process.env.NEXT_PUBLIC_SITE_NAME || "Next.js App",
@@ -14,8 +14,9 @@ export default async function AuthLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(options);
-  if (session) {
-    redirect("/");
-  }
-  return <>{children}</>;
+  return (
+    <AuthProvider session={session}>
+      <ToastProvider defaultLimit={3}>{children}</ToastProvider>
+    </AuthProvider>
+  );
 }

@@ -52,97 +52,103 @@ export default function RegisterPage() {
     }
   }
   return (
-    <Card className="max-w-sm m-auto">
-      <CardHeader className="space-y-1">
-        <CardTitle>Register</CardTitle>
-        <CardDescription>Sign up to access your account</CardDescription>
-      </CardHeader>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <CardContent className="flex flex-col gap-2">
-            <FormField
-              control={form.control}
-              name="image"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor={field.name}>Photo</FormLabel>
-                  <FormControl>
-                    <div className="flex">
-                      <ImageUpload
-                        value={field.value}
-                        onChange={field.onChange}
-                        onRemove={field.onChange}
-                        multiple={false}
-                        maxFiles={1}
-                        className="mx-auto"
+    <main className="flex items-center justify-center h-screen">
+      <Card className="w-96">
+        <CardHeader className="space-y-1">
+          <CardTitle>Register</CardTitle>
+          <CardDescription>Sign up to access your account</CardDescription>
+        </CardHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <CardContent className="flex flex-col gap-2">
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor={field.name}>Photo</FormLabel>
+                    <FormControl>
+                      <div className="flex">
+                        <ImageUpload
+                          value={field.value}
+                          onChange={field.onChange}
+                          onRemove={field.onChange}
+                          multiple={false}
+                          maxFiles={1}
+                          className="mx-auto"
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor={field.name}>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Input your name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor={field.name}>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Input your email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor={field.name}>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Input your password"
+                        {...field}
                       />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor={field.name}>Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Input your name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor={field.name}>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Input your email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor={field.name}>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Input your password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <p className="text-sm text-center">
-              Already have an account?
-              <Link href="/auth/signin">
-                <Button variant="link" className="text-blue-500" type="button">
-                  Sign in
-                </Button>
-              </Link>
-            </p>
-            <Button type="submit">
-              {loading ? (
-                <AiOutlineLoading3Quarters className=" animate-spin" />
-              ) : (
-                "Sign up"
-              )}
-            </Button>
-          </CardContent>
-        </form>
-      </Form>
-    </Card>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <p className="text-sm text-center">
+                Already have an account?
+                <Link href="/auth/signin">
+                  <Button
+                    variant="link"
+                    className="text-blue-500"
+                    type="button"
+                  >
+                    Sign in
+                  </Button>
+                </Link>
+              </p>
+              <Button type="submit">
+                {loading ? (
+                  <AiOutlineLoading3Quarters className=" animate-spin" />
+                ) : (
+                  "Sign up"
+                )}
+              </Button>
+            </CardContent>
+          </form>
+        </Form>
+      </Card>
+    </main>
   );
 }
