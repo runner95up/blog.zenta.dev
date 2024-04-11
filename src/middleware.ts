@@ -3,10 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
   if (path === "/") {
-    const res = NextResponse.next();
-    res.headers.set(`x-middleware-cache`, `no-cache`);
-    res.headers.set(`x-middleware-path`, path);
-    return res;
+    return NextResponse.next();
   }
   const rawToken = await getToken({
     req,

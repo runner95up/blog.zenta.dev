@@ -27,13 +27,13 @@ export default async function StudioLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(options);
-  if (!session) {
-    redirect("/auth/signin");
-  }
+  // if (!session) {
+  //   redirect("/auth/signin");
+  // }
 
   const find = await prisma.user.findUnique({
     where: {
-      id: session.user.id,
+      id: session?.user.id,
     },
   });
 

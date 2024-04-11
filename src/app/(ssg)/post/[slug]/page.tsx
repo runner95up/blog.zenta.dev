@@ -9,7 +9,7 @@ type Props = {
     slug: string;
   };
 };
-export const revalidate = 3600 * 12;
+export const revalidate = 3600 * 6;
 
 export async function generateStaticParams() {
   const posts = await getAllMetaPosts();
