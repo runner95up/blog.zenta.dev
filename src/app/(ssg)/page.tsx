@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Logo } from "@/components/brand";
 import { PostList, StackList, TagList } from "@/components/server";
 import { getMetaPosts, getMetaTags, getMetaTechs } from "@/lib/server";
+import { cn } from "@/lib/utils";
 import banner from "../../../public/cover.webp";
 
 const title = process.env.NEXT_PUBLIC_SITE_NAME;
@@ -31,6 +32,24 @@ export const metadata: Metadata = {
   },
 };
 
+const tabList = [
+  {
+    name: "Post",
+    value: "post",
+    ariaControls: "post-tab",
+  },
+  {
+    name: "Tag",
+    value: "tag",
+    ariaControls: "tag-tab",
+  },
+  {
+    name: "Stack",
+    value: "stack",
+    ariaControls: "stack-tab",
+  },
+];
+
 export default async function Home() {
   const tags = await getMetaTags({ limit: 10, page: 1 });
   const posts = await getMetaPosts({ limit: 10, page: 1 });
@@ -38,54 +57,53 @@ export default async function Home() {
 
   return (
     <main className="mt-4">
-      <section className="flex flex-col items-center">
+      <section className="inline-flex flex-col space-y-3 items-center overflow-hidden relative w-full drop-shadow-2xl group-hover:scale-105 transition-transform duration-200 ease-out px-5">
         <Image
           src={banner}
-          className="relative object-cover object-center mx-auto max-w-7xl rounded-3xl h-72"
+          className="rounded-3xl object-cover object-center h-48 md:h-72 max-w-7xl"
           alt={`Banner image for ${title} landing page`}
           priority
         />
         <Logo
           width={86}
-          className="relative z-50 w-20 h-20 -mt-10 bg-transparent rounded-xl"
+          className="relative z-50 w-20 h-20 -mt-12 bg-transparent rounded-xl"
         />
         <h1 className="my-4 text-3xl font-semibold">{title}</h1>
         <p className="max-w-3xl my-2">
-          {title} is a website about programming 🧑‍💻. I will be posting about my
-          programming progress, good and bad days and more. Also, I might have
-          some videos of me coding 🎥.
+          Welcome to {title} , your friendly corner of the internet dedicated to
+          all things programming! 🌟.{" "}
+          <span className="hidden md:inline">
+            {" "}
+            Join us on our exciting programming journey as we share our
+            experiences, tips, and tricks. Stay tuned for engaging written
+            content and, who knows, maybe even some video updates along the way!
+            🚀
+          </span>
+          Let&apos;s embark on this coding adventure together! 🧑‍💻🎥.
         </p>
       </section>
-      <Separator className="max-w-3xl my-4" />
-      <section className="max-w-3xl mx-auto">
-        <Tabs defaultValue="post" className="">
-          <TabsList className="justify-around w-full mx-auto" role="tablist">
-            <TabsTrigger
-              className=""
-              value="post"
-              role="tab"
-              aria-controls="post-tab"
-            >
-              Post
-            </TabsTrigger>
-            <TabsTrigger
-              className=""
-              value="tag"
-              role="tab"
-              aria-controls="tag-tab"
-            >
-              Tag
-            </TabsTrigger>
-            <TabsTrigger
-              className=""
-              value="stack"
-              role="tab"
-              aria-controls="stack-tab"
-            >
-              Stack
-            </TabsTrigger>
+      <section className="max-w-3xl mx-auto mt-8">
+        <Tabs defaultValue="post">
+          <TabsList
+            className="justify-around w-full mx-auto bg-transparent"
+            role="tablist"
+          >
+            {tabList.map((tab) => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                role="tab"
+                aria-controls={tab.ariaControls}
+                className={cn(
+                  "px-4 py-2 text-lg font-medium cursor-pointer hover:bg-neutral-800 hover:scale-105 transition-transform duration-200 ease-out",
+                  "data-[state=active]:bg-neutral-800 data-[state=active]:text-emerald-500 data-[state=active]:shadow"
+                )}
+              >
+                {tab.name}
+              </TabsTrigger>
+            ))}
           </TabsList>
-          <Separator className="max-w-3xl my-4" />
+          <Separator className="max-w-3xl md:my-4 my-2" />
           <TabsContent
             value="post"
             id="post-tab"

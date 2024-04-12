@@ -29,7 +29,12 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const form = useForm<RegisterForm>({
     resolver: zodResolver(RegisterSchema),
-    defaultValues: {},
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      image: null,
+    },
   });
 
   async function onSubmit(data: RegisterForm) {

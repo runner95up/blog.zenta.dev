@@ -29,6 +29,10 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const form = useForm<LoginForm>({
     resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   async function onSubmit(data: LoginForm) {
@@ -44,7 +48,7 @@ export default function LoginPage() {
     if (res?.ok) {
       setLoading(false);
       toast.success("Logged in successfully");
-      window.location.href = "/";
+      window.location.href = "/studio";
     } else {
       setLoading(false);
       toast.error(res?.error);

@@ -1,4 +1,5 @@
 import { GuestHeader } from "@/components/navigation";
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export default function SSGLayout({
     <>
       <GuestHeader />
       {children}
+      <Toaster richColors closeButton />
     </>
   );
 }

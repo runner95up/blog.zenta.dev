@@ -66,3 +66,22 @@ export async function getPostById(id: string) {
 
   return post;
 }
+
+export async function heatCountPost(id: string | undefined) {
+  if (!id) {
+    return;
+  }
+
+  const post = await prisma.post.update({
+    where: {
+      id,
+    },
+    data: {
+      heat: {
+        increment: 1,
+      },
+    },
+  });
+
+  return post;
+}

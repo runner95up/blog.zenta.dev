@@ -46,3 +46,22 @@ export async function getTagById(id: string) {
 
   return tag;
 }
+
+export async function heatCountTag(id: string | undefined) {
+  if (!id) {
+    return;
+  }
+
+  const tag = await prisma.tag.update({
+    where: {
+      id,
+    },
+    data: {
+      heat: {
+        increment: 1,
+      },
+    },
+  });
+
+  return tag;
+}

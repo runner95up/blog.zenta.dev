@@ -20,16 +20,18 @@ export const TagList = ({ tags }: { tags: ItemMeta[] }) => {
             <Link href={`/tag/${tag.id}`}>
               <Card
                 role="article"
-                className="transition-transform duration-300 hover:shadow-lg hover:scale-105 hover:ring-1"
+                className="transition-transform duration-300 hover:shadow-lg hover:scale-105 hover:ring-1 min-h-full overflow-hidden"
               >
-                <Image
-                  className="object-cover object-center h-48 p-2 mx-auto mt-2 max-w-7xl rounded-3xl"
-                  src={tag.photo ?? "https://via.placeholder.com/360/144"}
-                  alt={tag.name}
-                  priority={false}
-                  width={360}
-                  height={144}
-                />
+                <figure className="inline-flex flex-col items-center   relative w-full drop-shadow-2xl p-4">
+                  <Image
+                    className="rounded-xl object-cover object-center h-28 md:h-48"
+                    src={tag.photo ?? "https://via.placeholder.com/360/144"}
+                    alt={tag.name}
+                    priority={false}
+                    width={360}
+                    height={144}
+                  />
+                </figure>
                 <CardHeader>
                   <CardTitle>{tag.name}</CardTitle>
                   <CardDescription className="truncate">

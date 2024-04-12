@@ -60,3 +60,22 @@ export async function getTechById(id: string) {
 
   return tech;
 }
+
+export async function heatCountTech(id: string | undefined) {
+  if (!id) {
+    return;
+  }
+
+  const tech = await prisma.tech.update({
+    where: {
+      id,
+    },
+    data: {
+      heat: {
+        increment: 1,
+      },
+    },
+  });
+
+  return tech;
+}

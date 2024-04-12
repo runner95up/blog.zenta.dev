@@ -1,4 +1,4 @@
-import { getAllMetaTechs, getTechById } from "@/lib/server";
+import { getAllMetaTechs, getTechById, heatCountTech } from "@/lib/server";
 import { Metadata } from "next";
 import Image from "next/image";
 type Props = {
@@ -25,18 +25,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TechPage({ params }: Props) {
   const tech = await getTechById(params.id);
+
+  await heatCountTech(tech?.id);
+
   return (
     <main className="max-w-5xl mx-auto my-2">
       <article>
-        <Image
-          src={tech?.logo ?? "https://via.placeholder.com/360/144"}
-          alt={tech?.name ?? "Tech photo"}
-          className="relative object-cover object-center max-w-5xl mx-auto rounded-3xl h-96"
-          width={1024}
-          height={360}
-        />
+        <figure className="inline-flex flex-col items-center relative w-full drop-shadow-2xl p-4">
+          <Image
+            className="rounded-xl object-cover object-center h-48 sm:h-64 md:h-96"
+            src={tech?.logo ?? "https://via.placeholder.com/360/144"}
+            alt={tech?.name ?? "Tag logo"}
+            width={1024}
+            height={360}
+          />
+        </figure>
         <h1 className="my-4 text-2xl font-bold text-center">{tech?.name}</h1>
-        <p>{tech?.description}</p>
+        <p className="px-4 md:px-8">{tech?.description}</p>
       </article>
     </main>
   );

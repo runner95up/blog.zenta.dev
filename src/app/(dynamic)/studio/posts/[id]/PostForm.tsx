@@ -74,7 +74,7 @@ export const PostForm: FC<PostFormProps> = ({ initialData }) => {
         toast.success(json.message);
         router.refresh();
         setTimeout(() => {
-          //  router.push("/studio/posts");
+          router.push("/studio/posts");
         }, 1000);
       } else {
         if (json.redirect) {

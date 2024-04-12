@@ -137,6 +137,7 @@ model Tech {
   homepage    String?
   founders    TechFounder[]
   versions    TechVersion[]
+  heat        Int           @default(0)
   tags        Tag[]
   posts       Post[]
   createdAt   DateTime      @default(now())
@@ -150,6 +151,7 @@ model Tag {
   photo       String?
   techs       Tech[]
   posts       Post[]
+  heat        Int       @default(0)
   createBy    User?     @relation("createBy", fields: [creatorId], references: [id], onDelete: Cascade)
   creatorId   String?
   updateBy    User?     @relation("updateBy", fields: [updaterId], references: [id], onDelete: Cascade)
@@ -184,7 +186,7 @@ model Post {
   likes     PostLike[]
   dislikes  PostDislike[]
   comments  PostComment[]
-  views     Int           @default(0)
+  heat      Int           @default(0)
   readTime  Float         @default(0)
   createdAt DateTime      @default(now())
   updatedAt DateTime?     @updatedAt

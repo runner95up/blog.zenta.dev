@@ -27,9 +27,11 @@ import { Modal } from "../modal";
 
 export const MenuBar = ({ editor }: { editor: Editor | null }) => {
   const [isMounted, setIsMounted] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [ytopen, seYtOpen] = useState(false);
   const [ytUrl, setYtUrl] = useState<string | null>(null);
   const [ytError, setYtError] = useState<string | null>(null);
+  const [cldOpen, setCldOpen] = useState(false);
+  const [cldAttrs, setCldAttrs] = useState<any>({});
 
   useEffect(() => {
     if (editor && !isMounted) {
@@ -43,11 +45,17 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
 
   const preset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "";
 
-  const onUpload = (result: any) => {
-    const url = result.info.secure_url;
-
+  const onImgUpload = (attr: any) => {
+    const url = attr.src;
+    const title = attr.title;
+    const alt = attr.alt;
+    console.log(attr);
     if (url) {
-      editor?.chain().focus().setImage({ src: url }).run();
+      editor
+        ?.chain()
+        .focus()
+        .setImage({ src: url, title: title, alt: alt })
+        .run();
     }
   };
 
@@ -55,7 +63,7 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
     if (ytUrl) {
       editor?.chain().focus().setYoutubeVideo({ src: ytUrl }).run();
     }
-    setOpen(false);
+    seYtOpen(false);
   };
 
   function updateYTUrl(e: ChangeEvent<HTMLInputElement>) {
@@ -118,24 +126,24 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
       </Button>
       {/* Text Align Popover */}
       <Popover>
-        <PopoverTrigger>
+        <PopoverTrigger role="button" type="button">
           {editor?.isActive({ textAlign: "left" }) && (
-            <Button role="button" variant="ghost">
+            <Button role="button" type="button" variant="ghost">
               <CiTextAlignLeft />
             </Button>
           )}
           {editor?.isActive({ textAlign: "center" }) && (
-            <Button role="button" variant="ghost">
+            <Button role="button" type="button" variant="ghost">
               <CiTextAlignCenter />
             </Button>
           )}
           {editor?.isActive({ textAlign: "right" }) && (
-            <Button role="button" variant="ghost">
+            <Button role="button" type="button" variant="ghost">
               <CiTextAlignRight />
             </Button>
           )}
           {editor?.isActive({ textAlign: "justify" }) && (
-            <Button role="button" variant="ghost">
+            <Button role="button" type="button" variant="ghost">
               <CiTextAlignJustify />
             </Button>
           )}
@@ -222,8 +230,49 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
         <MdHorizontalRule />
       </Button>
       {/* Image */}
+      <Modal
+        title="Specify Image Details"
+        description="Specify the details of the image you want to embed."
+        isOpen={cldOpen}
+        onClose={() => setCldOpen(false)}
+      >
+        <Input
+          placeholder="Image Name"
+          className="mt-2"
+          onChange={(e) => {
+            setCldAttrs({ ...cldAttrs, title: e.target.value });
+          }}
+        />
+
+        <Input
+          placeholder="Image alt text"
+          className="mt-2"
+          onChange={(e) => {
+            setCldAttrs({ ...cldAttrs, alt: e.target.value });
+          }}
+        />
+        <div className="pt-6 space-x-2 flex items-center justify-end w-full">
+          <Button variant="outline" onClick={() => setCldOpen(false)}>
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              onImgUpload(cldAttrs);
+              setCldOpen(false);
+            }}
+          >
+            Continue
+          </Button>
+        </div>
+      </Modal>
       <CldUploadWidget
-        onSuccess={onUpload}
+        onSuccess={(result: any) => {
+          if (result.info.secure_url) {
+            setCldOpen(true);
+            setCldAttrs({ src: result.info.secure_url });
+          }
+          // onImgUpload(result);
+        }}
         uploadPreset={preset}
         signatureEndpoint="/api/sign-cloudinary-params"
         options={{
@@ -277,15 +326,15 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
       <Button
         variant={variant("youtube")}
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => seYtOpen(true)}
       >
         <FaYoutube />
       </Button>
       <Modal
         title="Insert Youtube Video"
         description="Paste the URL of the video you want to embed."
-        isOpen={open}
-        onClose={() => setOpen(false)}
+        isOpen={ytopen}
+        onClose={() => seYtOpen(false)}
       >
         <Input
           placeholder="Youtube URL"
@@ -294,7 +343,7 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
         />
         {ytError && <p className="text-red-500">{ytError}</p>}
         <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-          <Button variant="outline" onClick={() => setOpen(true)}>
+          <Button variant="outline" onClick={() => seYtOpen(true)}>
             Cancel
           </Button>
           <Button onClick={onConfirm}>Continue</Button>

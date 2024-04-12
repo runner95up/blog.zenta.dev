@@ -110,6 +110,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           sources: ["local", "url", "unsplash"],
           multiple: multiple,
           maxFiles: maxFiles,
+          cropping: true,
+          croppingShowBackButton: true,
         }}
       >
         {({ open }) => {
