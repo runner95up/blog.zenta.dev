@@ -1,4 +1,5 @@
-import { GuestHeader } from "@/components/navigation";
+import { GuestFooter, GuestHeader } from "@/components/navigation";
+import { Separator } from "@/components/separator";
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { ReactNode } from "react";
@@ -16,6 +17,8 @@ export default function SSGLayout({
     <>
       <GuestHeader />
       {children}
+      <Separator />
+      <GuestFooter />
       <Toaster richColors closeButton />
     </>
   );

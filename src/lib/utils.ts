@@ -157,3 +157,4 @@ export function calculateReadTime(words: number | undefined) {
 
   return Math.ceil(minutes);
 }
+

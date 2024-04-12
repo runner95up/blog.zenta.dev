@@ -1,10 +1,21 @@
 import { extensions } from "@/components/client/editor";
-import { getAllMetaPosts, getPostBySlug, heatCountPost } from "@/lib/server";
+import { Separator } from "@/components/separator";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import {
+  generateRSS,
+  getAllMetaPosts,
+  getPostBySlug,
+  heatCountPost,
+  RSSQuery,
+} from "@/lib/server";
+import { addImageSize } from "@/lib/utils";
 import { generateHTML } from "@tiptap/html";
 import parse from "html-react-parser";
 import { Metadata } from "next";
 import { CldOgImage } from "next-cloudinary";
 import Image from "next/image";
+import Link from "next/link";
+import { PiUserCircleBold } from "react-icons/pi";
 import Code from "./Code";
 import styles from "./style.module.css";
 
@@ -14,20 +25,90 @@ type Props = {
   };
 };
 
-export const revalidate = 3600 * 6;
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const posts = await getAllMetaPosts();
+
+  const qPost: RSSQuery[] = posts.map((item) => {
+    const tags = item.tags ?? [];
+    const authors = item.authors.map((author) => {
+      console.log(author);
+      return {
+        name: author.name || "",
+        email: author.email || "",
+        link: `mailto:${author.email}`,
+      };
+    });
+    return {
+      id: item.id,
+      slug: item.slug,
+      title: item.title,
+      description: item.summary || item.title,
+      link: `${siteUrl}/post/${item.slug}`,
+      guid: item.id,
+      image: item.cover || "",
+      category: tags.map((tag) => tag.name),
+      date: item.updatedAt || new Date(),
+      author: authors,
+      published: item.createdAt || new Date(),
+    };
+  });
+
+  generateRSS(qPost);
   return posts.map((post) => ({
     slug: post.slug,
   }));
 }
 
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME;
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getPostBySlug(params.slug);
+  const authors = post?.authors ?? [];
+  const tags = post?.tags ?? [];
   return {
     title: post?.title,
     description: post?.summary,
+    applicationName: siteName,
+    keywords: [
+      "blog",
+      "zenta",
+      "programming",
+      "development",
+      ...tags.map((tag) => tag.name),
+    ],
+    authors: authors.map((author) => {
+      return {
+        name: author.name ?? "",
+        url: `mailto:${author.email}`,
+      };
+    }),
+    alternates: {
+      canonical: `${siteUrl}`,
+      types: {
+        "application/rss+xml": [{ url: `${siteUrl}/rss.xml`, title: "rss" }],
+      },
+    },
+    icons: `${siteUrl}/favicon.ico`,
+    openGraph: {
+      title: post?.title,
+      description: post?.summary ?? post?.title,
+      type: "article",
+      url: `https://blog.zenta.dev/post/${params.slug}`,
+      siteName,
+      images: post?.cover ?? "",
+    },
+    robots: "index, follow",
+    twitter: {
+      card: "summary_large_image",
+      site: "@zenta",
+      creator: "@zenta",
+      title: post?.title,
+      description: post?.summary ?? post?.title,
+      images: post?.cover ?? "",
+    },
   };
 }
 
@@ -55,27 +136,58 @@ export default async function PostPage({ params }: Props) {
   }
 
   return (
-    <main className="max-w-5xl mx-auto my-2">
-      <section>
-        <figure className="inline-flex flex-col items-center relative w-full drop-shadow-2xl p-4">
-          <Image
-            className="rounded-xl object-cover object-center h-48 sm:h-64 md:h-96"
-            src={post?.cover ?? "https://via.placeholder.com/360/144"}
-            alt={post?.title ?? "Post photo"}
-            width={1024}
-            height={360}
-          />
-        </figure>
-        <h1
-          className={`my-4 text-4xl font-bold text-center ${
-            styles.gradient_text
-          }`}
-        >
-          {post?.title}
-        </h1>
-      </section>
-      <article className="px-4 md:px-8 ">{newHTML}</article>
-    </main>
+    <>
+      <main className="max-w-5xl mx-auto my-2">
+        <section>
+          <figure className="inline-flex flex-col items-center relative w-full drop-shadow-2xl p-4">
+            <Image
+              className="rounded-xl object-cover object-center h-48 sm:h-64 md:h-96"
+              src={post?.cover ?? "https://via.placeholder.com/360/144"}
+              alt={post?.title ?? "Post photo"}
+              width={1024}
+              height={360}
+            />
+          </figure>
+          <h1
+            className={`my-4 text-4xl font-bold text-center ${styles.gradient_text}`}
+          >
+            {post?.title}
+          </h1>
+          <div className="grid grid-8">
+            {post?.tags.map((item) => {
+              return (
+                <div key={item.id}>
+                  <p>{item.name}</p>
+                </div>
+              );
+            })}
+          </div>
+          {post?.authors && (
+            <div className="flex items-center justify-center">
+              {post.authors.map((user) => (
+                <Link key={user.id} href={`mailto:${user.email}`}>
+                  <div className="flex items-center justify-center">
+                    <Avatar className="h-16 w-16 flex items-center">
+                      {user.image ? (
+                        <AvatarImage
+                          src={addImageSize(user.image, 32, 32)}
+                          alt={user.name || user.email || ""}
+                        />
+                      ) : (
+                        <PiUserCircleBold className="text-4xl" />
+                      )}
+                    </Avatar>
+                    <h5 className="font-medium text-lg">{user.name}</h5>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </section>
+        <Separator />
+        <article className="px-4 md:px-8 ">{newHTML}</article>
+      </main>
+    </>
   );
 }
 
@@ -99,7 +211,6 @@ function replace(code: string) {
 }
 
 function getImg(html: string) {
-  console.log(html);
   const regex = /<img src="(.*?)" alt="(.*?)" title="(.*?)"/;
   const matches = html.match(regex);
   if (!matches) {

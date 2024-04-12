@@ -33,11 +33,26 @@ export async function getMetaPosts({ limit = 5, page = 1 }) {
 export const getAllMetaPosts = async () => {
   const posts = await prisma.post.findMany({
     select: {
+      id: true,
       title: true,
       slug: true,
       cover: true,
       summary: true,
+      createdAt: true,
       updatedAt: true,
+      tags: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      authors: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
     },
     orderBy: {
       updatedAt: "desc",
@@ -51,6 +66,10 @@ export async function getPostBySlug(slug: string) {
   const post = await prisma.post.findUnique({
     where: {
       slug,
+    },
+    include: {
+      authors: true,
+      tags: true,
     },
   });
 
